@@ -31,12 +31,12 @@ window.CONFIG = {
   GTM_ID: 'GTM-T68Z6TMF',            // 본인 GTM 컨테이너 ID로 교체
   CURRENCY: 'KRW',
   // 모두 테스트용 가상 금액 (실제 메가박스 대관료 아님)
-  // 생일관 1일 이용료 — 생일카페 대관 예약금 시세(하루 10~50만 원, 헤럴드경제 2026.08)의 상단값.
+  // 기념일관 1일 이용료 — 생일카페 대관 예약금 시세(하루 10~50만 원, 헤럴드경제 2026.08)의 상단값.
   // 상영관 전체(스크린·좌석·음향)를 기간 내내 팬덤 전용으로 쓰는 프리미엄 공간이라 상단으로 책정
-  SPACE: {id:'BDAY_HALL', name:'생일관', place:'메가박스 코엑스', seats:120, hours:'10:00~22:00', price_per_day:500000},
+  SPACE: {id:'SPECIAL_DAY_HALL', name:'기념일관', place:'메가박스 코엑스', seats:120, hours:'10:00~22:00', price_per_day:500000},
   MIN_DAYS: 2, MAX_DAYS: 7,
   TIERS: [
-    {id:'PKG_BASIC',   name:'Basic',   desc:'생일관 전용 이용 + 팬 영상 상시 상영 + 굿즈 나눔존', price:0},
+    {id:'PKG_BASIC',   name:'Basic',   desc:'기념일관 전용 이용 + 팬 영상 상시 상영 + 굿즈 나눔존', price:0},
     {id:'PKG_PLUS',    name:'Plus',    desc:'Basic + 포토부스 제작 + 사진 전시월 설치', price:150000},
     {id:'PKG_PREMIUM', name:'Premium', desc:'Plus + 커스텀 오리지널 티켓 + 특전 포토카드', price:300000}
   ],
@@ -242,7 +242,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="sec">
       <h2>이렇게 진행돼요</h2>
       <div class="how">
-        <div><em>1</em><p style="margin:0"><b>생일관 기간 고르기</b><span>기념일과 주인공, 생일관을 쓸 기간(2~7일)을 골라요</span></p></div>
+        <div><em>1</em><p style="margin:0"><b>기념일관 기간 고르기</b><span>기념일과 주인공, 기념일관을 쓸 기간(2~7일)을 골라요</span></p></div>
         <div><em>2</em><p style="margin:0"><b>패키지와 팬덤 컬러 정하기</b><span>포토존, 특전, 팝콘통까지 우리 팬덤 색으로</span></p></div>
         <div><em>3</em><p style="margin:0"><b>콘텐츠 등록 후 메가박스 확인</b><span>권리 확인을 마치면 메가박스가 검토 후 승인해요</span></p></div>
       </div>
@@ -254,10 +254,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="bar"><button class="cta" id="btn_landing_apply" data-ga="landing_cta_click">팬 대관 신청하기</button></div>
   </section>
 
-  <!-- ================= 1. 일정·생일관 ================= -->
-  <section class="screen" data-screen="schedule" data-title="일정·생일관 선택">
+  <!-- ================= 1. 일정·기념일관 ================= -->
+  <section class="screen" data-screen="schedule" data-title="일정·기념일관 선택">
     <div class="hd"><button class="icon-btn" data-back aria-label="뒤로"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h1>팬 대관 신청</h1><span style="width:48px"></span></div>
-    <div class="steps"><div class="cur"><i></i>일정·생일관</div><div><i></i>패키지</div><div><i></i>콘텐츠·권리</div><div><i></i>결제</div></div>
+    <div class="steps"><div class="cur"><i></i>일정·기념일관</div><div><i></i>패키지</div><div><i></i>콘텐츠·권리</div><div><i></i>결제</div></div>
     <div class="sec">
       <h2>어떤 날을 기념하나요?</h2>
       <div class="chips" id="types"></div>
@@ -265,9 +265,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="gap"></div>
     <div class="sec">
-      <h2>생일관 <small>팬덤 전용관</small></h2>
+      <h2>기념일관 <small>팬덤 전용관</small></h2>
       <div class="bhall">
-        <div class="bh-top"><b>메가박스 코엑스 생일관</b><span id="bh_price"></span></div>
+        <div class="bh-top"><b>메가박스 코엑스 기념일관</b><span id="bh_price"></span></div>
         <ul>
           <li>기간 내내 우리 팬덤 전용 · 매일 10:00~22:00</li>
           <li>대형 스크린으로 팬 영상 하루 종일 상영 · 120석</li>
@@ -280,7 +280,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="dates range" id="dates"></div>
       <p class="hint" id="range_hint">시작일과 종료일을 차례로 눌러 주세요</p>
       <div class="range-info"><span id="range_label"></span><b id="range_price"></b></div>
-      <p class="hint">시간 선택 없이 기간 동안 생일관 전체를 계속 사용해요.</p>
+      <p class="hint">시간 선택 없이 기간 동안 기념일관 전체를 계속 사용해요.</p>
     </div>
     <div class="bar"><div class="sum"><span id="s1_sum"></span><b id="s1_price"></b></div><button class="cta" id="btn_schedule_next" data-ga="schedule_next_click">다음 · 패키지 선택</button></div>
   </section>
@@ -288,7 +288,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- ================= 2. 패키지 ================= -->
   <section class="screen" data-screen="package" data-title="패키지·옵션 선택">
     <div class="hd"><button class="icon-btn" data-back aria-label="뒤로"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h1>팬 대관 신청</h1><span style="width:48px"></span></div>
-    <div class="steps"><div class="done"><i></i>일정·생일관</div><div class="cur"><i></i>패키지</div><div><i></i>콘텐츠·권리</div><div><i></i>결제</div></div>
+    <div class="steps"><div class="done"><i></i>일정·기념일관</div><div class="cur"><i></i>패키지</div><div><i></i>콘텐츠·권리</div><div><i></i>결제</div></div>
     <div class="sec"><h2>패키지</h2><div id="tiers" role="radiogroup" aria-label="패키지"></div></div>
     <div class="sec">
       <h2>팬덤 컬러 <small>특전·포토존에 적용돼요</small></h2>
@@ -308,7 +308,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- ================= 3. 콘텐츠·권리 ================= -->
   <section class="screen" data-screen="content" data-title="콘텐츠 등록·권리 확인">
     <div class="hd"><button class="icon-btn" data-back aria-label="뒤로"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h1>팬 대관 신청</h1><span style="width:48px"></span></div>
-    <div class="steps"><div class="done"><i></i>일정·생일관</div><div class="done"><i></i>패키지</div><div class="cur"><i></i>콘텐츠·권리</div><div><i></i>결제</div></div>
+    <div class="steps"><div class="done"><i></i>일정·기념일관</div><div class="done"><i></i>패키지</div><div class="cur"><i></i>콘텐츠·권리</div><div><i></i>결제</div></div>
     <div class="sec">
       <h2>콘텐츠 등록 <small>테스트용 · 실제 파일은 올라가지 않아요</small></h2>
       <div id="uploads"></div>
@@ -325,7 +325,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- ================= 4. 결제 ================= -->
   <section class="screen" data-screen="pay" data-title="결제">
     <div class="hd"><button class="icon-btn" data-back aria-label="뒤로"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><h1>결제</h1><span style="width:48px"></span></div>
-    <div class="steps"><div class="done"><i></i>일정·생일관</div><div class="done"><i></i>패키지</div><div class="done"><i></i>콘텐츠·권리</div><div class="cur"><i></i>결제</div></div>
+    <div class="steps"><div class="done"><i></i>일정·기념일관</div><div class="done"><i></i>패키지</div><div class="done"><i></i>콘텐츠·권리</div><div class="cur"><i></i>결제</div></div>
     <div class="sec"><h2>대관 정보</h2><div class="sumtbl" id="pay_info"></div></div>
     <div class="sec"><h2>결제 금액</h2><div class="sumtbl" id="pay_price"></div></div>
     <div class="sec">
@@ -457,7 +457,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   $('#btn_landing_apply').addEventListener('click', function(){ track('landing_cta_click',{cta_text:this.textContent}); go('schedule'); });
 
-  /* ---------- 1. 일정·생일관 ---------- */
+  /* ---------- 1. 일정·기념일관 ---------- */
   function renderSchedule(){
     $('#types').innerHTML = TYPES.map(function(t,i){ return '<button class="chip" id="chip_type_'+t.k+'" aria-pressed="'+(i===state.type)+'" data-i="'+i+'">'+t.l+'</button>'; }).join('');
     $('#inp_target').value = state.target;
@@ -466,7 +466,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     $('#range_label').textContent = rangeLabel() + ' · ' + days() + '일';
     $('#range_price').textContent = won(C.SPACE.price_per_day) + ' × ' + days() + '일';
     $('#bh_price').textContent = '1일 ' + won(C.SPACE.price_per_day);
-    $('#s1_sum').textContent = '생일관 ' + days() + '일 · ' + rangeLabel();
+    $('#s1_sum').textContent = '기념일관 ' + days() + '일 · ' + rangeLabel();
     $('#s1_price').textContent = won(spaceTotal());
     $$('#types .chip').forEach(function(b){ b.onclick=function(){ state.type=+b.dataset.i; track('event_type_select',{event_type:TYPES[state.type].k}); renderSchedule(); }; });
     $$('#dates .date').forEach(function(b){ b.onclick=function(){ pickDate(+b.dataset.i); }; });
@@ -540,7 +540,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       '<div><span>장소</span>'+C.SPACE.place+' · '+C.SPACE.name+' ('+C.SPACE.seats+'석)</div>'+
       '<div><span>이용 시간</span>기간 내 매일 '+C.SPACE.hours+'</div>'+
       '<div><span>팬덤 컬러</span><span style="display:inline-flex;align-items:center;gap:6px;color:var(--ink)"><i style="width:14px;height:14px;border-radius:50%;background:'+COLORS[state.color].fan+';display:inline-block"></i>'+esc(colorLabel())+'</span></div>';
-    var rows = '<div><span>생일관 ('+won(C.SPACE.price_per_day)+' × '+days()+'일)</span>'+won(spaceTotal())+'</div><div><span>'+t.name+' 패키지</span>'+(t.price?won(t.price):'포함')+'</div>';
+    var rows = '<div><span>기념일관 ('+won(C.SPACE.price_per_day)+' × '+days()+'일)</span>'+won(spaceTotal())+'</div><div><span>'+t.name+' 패키지</span>'+(t.price?won(t.price):'포함')+'</div>';
     C.ADDONS.forEach(function(a,i){ if(state.addons[i]) rows += '<div><span>'+a.name+'</span>'+won(a.price)+'</div>'; });
     $('#pay_price').innerHTML = rows + '<div class="tot"><span>합계</span>'+won(total())+'</div>';
     $('#paymethods').innerHTML = PAYS.map(function(p,i){ return '<button class="radio" role="radio" id="radio_pay_'+i+'" aria-checked="'+(i===state.pay)+'" data-i="'+i+'"><span class="dot"></span>'+p+'</button>'; }).join('');
@@ -565,7 +565,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     $('#done_name').textContent = targetName();
     $('#done_date').textContent = shortRange();
     $('#done_place').textContent = C.SPACE.place + ' · ' + C.SPACE.name + ' · ' + days() + '일';
-    $('#done_step3').textContent = state.tier === 2 ? '행사 전 커스텀 오리지널 티켓·포토카드를 제작하고, 첫날 아침 생일관 꾸미기를 마쳐요' : (state.tier === 1 ? '첫날 아침 생일관에 포토부스와 사진 전시월을 설치해요' : '기간 동안 생일관에서 팬 영상을 상시 상영해요');
+    $('#done_step3').textContent = state.tier === 2 ? '행사 전 커스텀 오리지널 티켓·포토카드를 제작하고, 첫날 아침 기념일관 꾸미기를 마쳐요' : (state.tier === 1 ? '첫날 아침 기념일관에 포토부스와 사진 전시월을 설치해요' : '기간 동안 기념일관에서 팬 영상을 상시 상영해요');
   }
   $('#btn_done_share').addEventListener('click', function(){
     var text = targetName() + ' ' + TYPES[state.type].l + ' 상영회, 메가박스에서 열려요! #팬상영회';
