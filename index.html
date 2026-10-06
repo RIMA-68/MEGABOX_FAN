@@ -36,9 +36,12 @@ window.CONFIG = {
     {id:'HALL_ATMOS', name:'돌비 애트모스관', desc:'입체 음향으로 응원 영상과 노래를', seats:180, price:550000},
     {id:'HALL_BTQ',   name:'더 부티크',       desc:'프라이빗 좌석의 소규모 모임', seats:40, price:250000}
   ],
+  // 로비 기념존(포토부스·굿즈 나눔존) 1일 대관료 — 생일카페 대관 예약금 시세(하루 10~50만 원, 헤럴드경제 2026.08)의 중간값
+  SPACE: {id:'SPACE_LOBBY', name:'로비 기념존 대관', desc:'포토부스·굿즈 나눔존 운영 공간', price_per_day:300000},
+  MIN_DAYS: 2, MAX_DAYS: 7,
   TIERS: [
-    {id:'PKG_BASIC',   name:'Basic',   desc:'상영관 대관 + 대형 스크린 팬 영상 상영', price:0},
-    {id:'PKG_PLUS',    name:'Plus',    desc:'Basic + 로비 포토존 + 사진 전시월', price:150000},
+    {id:'PKG_BASIC',   name:'Basic',   desc:'로비 기념존 + 상영관 1회 팬 영상 상영', price:0},
+    {id:'PKG_PLUS',    name:'Plus',    desc:'Basic + 포토부스 제작 + 사진 전시월 설치', price:150000},
     {id:'PKG_PREMIUM', name:'Premium', desc:'Plus + 커스텀 오리지널 티켓 + 특전 포토카드', price:300000}
   ],
   ADDONS: [
@@ -93,6 +96,15 @@ input{font-family:inherit}
 .date span{font-size:11px}.date b{font-size:16px}
 .date[aria-pressed=true]{background:var(--purple);border-color:var(--purple);color:#fff}
 .date[aria-pressed=true] span,.date[aria-pressed=true] b{color:#fff}
+.dates.range{grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.dates.range .date{height:52px}
+.date.mid{background:var(--purple-tint);border-color:var(--purple-tint)}
+.date.mid span,.date.mid b{color:var(--purple)!important}
+.range-info{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--bg2);font-size:13px;color:#444}
+.range-info b{color:var(--purple)}
+.hint{font-size:12px;color:#888;margin:8px 0 0}
+.shows{display:flex;flex-wrap:wrap;gap:6px}
+.shows .chip{flex:0 0 auto;padding:0 12px}
 .opt{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px 14px;margin-bottom:8px}
 .opt[aria-checked=true]{border:1.5px solid var(--purple);background:var(--purple-tint)}
 .opt .dot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line2);flex-shrink:0;margin-top:2px;background:#fff}
@@ -253,10 +265,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="gap"></div>
     <div class="sec">
-      <h2>날짜 <small>메가박스 코엑스</small></h2>
-      <div class="dates" id="dates"></div>
+      <h2>대관 기간 <small>최소 2일 · 최대 7일</small></h2>
+      <div class="dates range" id="dates"></div>
+      <p class="hint" id="range_hint">시작일과 종료일을 차례로 눌러 주세요</p>
+      <div class="range-info"><span id="range_label"></span><b id="range_price"></b></div>
     </div>
-    <div class="sec"><h2>상영관</h2><div id="halls" role="radiogroup" aria-label="상영관"></div></div>
+    <div class="sec"><h2>상영일 <small>기간 중 하루 · 1회 상영</small></h2><div class="shows" id="shows"></div></div>
+    <div class="sec"><h2>상영관 <small>1회 상영 대관료</small></h2><div id="halls" role="radiogroup" aria-label="상영관"></div></div>
     <div class="sec"><h2>시간대 <small>2시간 30분 이용</small></h2><div class="slots" id="slots"></div></div>
     <div class="bar"><div class="sum"><span id="s1_sum"></span><b id="s1_price"></b></div><button class="cta" id="btn_schedule_next" data-ga="schedule_next_click">다음 · 패키지 선택</button></div>
   </section>
@@ -353,7 +368,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   /* ---------- 데이터 ---------- */
   var TYPES = [{k:'birthday',l:'생일',w:'HAPPY<br>BIRTHDAY'},{k:'debut_day',l:'데뷔일',w:'HAPPY<br>DEBUT DAY'},{k:'anniversary',l:'데뷔주년',w:'HAPPY<br>ANNIVERSARY'},{k:'work_day',l:'작품 기념일',w:'SPECIAL<br>DAY'}];
-  var DATES = [{d:'16',w:'금',c:'#222'},{d:'17',w:'토',c:'#2D6BD8'},{d:'18',w:'일',c:'#D84A4A'},{d:'19',w:'월',c:'#222'},{d:'20',w:'화',c:'#222'}];
+  var DATES = (function(){ var w=['목','금','토','일','월','화','수'], out=[]; for (var i=0;i<14;i++){ var d=15+i, wd=w[i%7]; out.push({d:String(d), w:wd, c: wd==='토'?'#2D6BD8':(wd==='일'?'#D84A4A':'#222')}); } return out; })();
   var SLOTS = [{l:'오전',t:'10:00'},{l:'오후',t:'14:00'},{l:'저녁',t:'19:00'}];
   var COLORS = [{k:'pink',l:'핑크',fan:'#F4A6C6',ink:'#2A1420',deep:'#B83A72'},{k:'sky',l:'스카이',fan:'#8EC5F2',ink:'#0E2233',deep:'#2A65A8'},{k:'lemon',l:'레몬',fan:'#F6D55C',ink:'#2B2205',deep:'#8A6500'},{k:'lilac',l:'라일락',fan:'#B79CF2',ink:'#1C1233',deep:'#6343B8'},{k:'custom',l:'기타',fan:'#FF8A65',ink:'#2B140C',deep:'#A3401F',custom:true}];
   var UPLOADS = [{k:'video',n:'상영 영상',d:'팬이 만든 축하 영상 (mp4)',ic:'<rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2"/>'},{k:'photo',n:'전시 사진',d:'사진 전시월에 걸 사진',ic:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 15l4-4 4 4 3-3 5 5"/>'},{k:'design',n:'특전 디자인',d:'티켓·포토카드 앞면 이미지',ic:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6"/>'}];
@@ -363,7 +378,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var params = new URLSearchParams(location.search);
   var state = {
     ab: (params.get('ab') || store('ab2') || (Math.random() < .5 ? 'A' : 'B')).toUpperCase() === 'B' ? 'B' : 'A',
-    type:0, target:'', date:1, hall:1, slot:1, tier:1, color:0, addons:[true,false,false],
+    type:0, target:'', start:1, end:2, show:2, picking:false, hall:1, slot:1, tier:1, color:0, addons:[true,false,false],
     uploads:[false,false,false], rights:[false,false,false,false], pay:0, agree:false, orderId:null
   };
   store('ab2', state.ab);
@@ -375,6 +390,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
   function ecom(){
     var h=C.HALLS[state.hall], t=C.TIERS[state.tier], items=[
+      {item_id:C.SPACE.id, item_name:C.SPACE.name, item_category:'팬 대관', item_category2:TYPES[state.type].l, item_variant:days()+'일', price:C.SPACE.price_per_day, quantity:days()},
       {item_id:h.id, item_name:'팬 대관 · '+h.name, item_category:'팬 대관', item_category2:TYPES[state.type].l, item_variant:SLOTS[state.slot].l, price:h.price, quantity:1},
       {item_id:t.id, item_name:t.name+' 패키지', item_category:'패키지', item_variant:colorLabel(), price:t.price, quantity:1}];
     C.ADDONS.forEach(function(a,i){ if(state.addons[i]) items.push({item_id:a.id, item_name:a.name, item_category:'추가 옵션', price:a.price, quantity:1}); });
@@ -382,10 +398,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
   function trackEcom(event, extra){ dl.push({ecommerce:null}); track(event, Object.assign({ecommerce:ecom()}, extra||{})); }
   function addonSum(){ return C.ADDONS.reduce(function(s,a,i){ return s + (state.addons[i]?a.price:0); },0); }
-  function total(){ return C.HALLS[state.hall].price + C.TIERS[state.tier].price + addonSum(); }
-  function soldOut(di, hi, si){ return (di===2 && si===2) || (di===1 && hi===1 && si===2) || (di===0 && hi===2 && si===0); }
+  function days(){ return state.end - state.start + 1; }
+  function spaceTotal(){ return C.SPACE.price_per_day * days(); }
+  function total(){ return spaceTotal() + C.HALLS[state.hall].price + C.TIERS[state.tier].price + addonSum(); }
+  function dl2(i){ var d=DATES[i]; return '10.'+d.d+'('+d.w+')'; }
+  function iso(i){ return '2026-10-'+DATES[i].d; }
+  function rangeLabel(){ return dl2(state.start) + ' ~ ' + dl2(state.end); }
+  function soldOut(di, hi, si){ var d = DATES[di].d; return (d==='18' && si===2) || (d==='17' && hi===1 && si===2) || (d==='16' && hi===2 && si===0); }
   function targetName(){ return state.target.trim() || '[아티스트명]'; }
-  function dateLabel(){ var d=DATES[state.date]; return '10.'+d.d+'('+d.w+')'; }
+  function dateLabel(){ return dl2(state.show); }
 
   /* UTM */
   var utm = {};
@@ -432,21 +453,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function renderSchedule(){
     $('#types').innerHTML = TYPES.map(function(t,i){ return '<button class="chip" id="chip_type_'+t.k+'" aria-pressed="'+(i===state.type)+'" data-i="'+i+'">'+t.l+'</button>'; }).join('');
     $('#inp_target').value = state.target;
-    $('#dates').innerHTML = DATES.map(function(d,i){ var on=i===state.date; return '<button class="date" id="chip_date_10'+d.d+'" aria-pressed="'+on+'" data-i="'+i+'"><span style="color:'+(on?'#fff':d.c)+'">'+d.w+'</span><b style="color:'+(on?'#fff':d.c)+'">'+d.d+'</b></button>'; }).join('');
-    $('#halls').innerHTML = C.HALLS.map(function(h,i){ return '<button class="opt" role="radio" id="radio_hall_'+h.id+'" aria-checked="'+(i===state.hall)+'" data-i="'+i+'"><span class="dot"></span><span class="bd"><span class="top"><b>'+h.name+'</b><span class="pr">'+won(h.price)+'</span></span><p>'+h.desc+' · '+h.seats+'석</p></span></button>'; }).join('');
-    if (soldOut(state.date,state.hall,state.slot)){ for (var s=0;s<3;s++){ if(!soldOut(state.date,state.hall,s)){ state.slot=s; break; } } }
-    $('#slots').innerHTML = SLOTS.map(function(s,i){ var so=soldOut(state.date,state.hall,i); return '<button class="slot" id="chip_slot_'+i+'" aria-pressed="'+(!so&&i===state.slot)+'" data-i="'+i+'"'+(so?' disabled':'')+'>'+s.l+'<small>'+(so?'마감':s.t+' 시작')+'</small></button>'; }).join('');
-    $('#s1_sum').textContent = TYPES[state.type].l + ' · ' + dateLabel() + ' ' + SLOTS[state.slot].l + ' · ' + C.HALLS[state.hall].name;
-    $('#s1_price').textContent = won(C.HALLS[state.hall].price);
+    $('#dates').innerHTML = DATES.map(function(d,i){ var edge = i===state.start || i===state.end, mid = i>state.start && i<state.end; return '<button class="date'+(mid?' mid':'')+'" id="chip_date_10'+d.d+'" aria-pressed="'+edge+'" data-i="'+i+'"><span style="color:'+(edge?'#fff':d.c)+'">'+d.w+'</span><b style="color:'+(edge?'#fff':d.c)+'">'+d.d+'</b></button>'; }).join('');
+    $('#range_hint').textContent = state.picking ? '종료일을 눌러 주세요 (최대 ' + C.MAX_DAYS + '일)' : '시작일과 종료일을 차례로 눌러 주세요';
+    $('#range_label').textContent = rangeLabel() + ' · ' + days() + '일';
+    $('#range_price').textContent = won(C.SPACE.price_per_day) + ' × ' + days() + '일';
+    if (state.show < state.start || state.show > state.end) state.show = state.end;
+    var showIdx = []; for (var k = state.start; k <= state.end; k++) showIdx.push(k);
+    $('#shows').innerHTML = showIdx.map(function(i){ return '<button class="chip" id="chip_show_10'+DATES[i].d+'" aria-pressed="'+(i===state.show)+'" data-i="'+i+'">'+dl2(i)+'</button>'; }).join('');
+    $('#halls').innerHTML = C.HALLS.map(function(h,i){ return '<button class="opt" role="radio" id="radio_hall_'+h.id+'" aria-checked="'+(i===state.hall)+'" data-i="'+i+'"><span class="dot"></span><span class="bd"><span class="top"><b>'+h.name+'</b><span class="pr">1회 '+won(h.price)+'</span></span><p>'+h.desc+' · '+h.seats+'석</p></span></button>'; }).join('');
+    if (soldOut(state.show,state.hall,state.slot)){ for (var s=0;s<3;s++){ if(!soldOut(state.show,state.hall,s)){ state.slot=s; break; } } }
+    $('#slots').innerHTML = SLOTS.map(function(s,i){ var so=soldOut(state.show,state.hall,i); return '<button class="slot" id="chip_slot_'+i+'" aria-pressed="'+(!so&&i===state.slot)+'" data-i="'+i+'"'+(so?' disabled':'')+'>'+s.l+'<small>'+(so?'마감':s.t+' 시작')+'</small></button>'; }).join('');
+    $('#s1_sum').textContent = days() + '일 대관 · 상영 ' + dateLabel() + ' ' + SLOTS[state.slot].l;
+    $('#s1_price').textContent = won(spaceTotal() + C.HALLS[state.hall].price);
     $$('#types .chip').forEach(function(b){ b.onclick=function(){ state.type=+b.dataset.i; track('event_type_select',{event_type:TYPES[state.type].k}); renderSchedule(); }; });
-    $$('#dates .date').forEach(function(b){ b.onclick=function(){ state.date=+b.dataset.i; track('date_select',{rental_date:'2026-10-'+DATES[state.date].d}); renderSchedule(); }; });
+    $$('#dates .date').forEach(function(b){ b.onclick=function(){ pickDate(+b.dataset.i); }; });
+    $$('#shows .chip').forEach(function(b){ b.onclick=function(){ state.show=+b.dataset.i; track('date_select',{date_role:'screening', screening_date:iso(state.show)}); renderSchedule(); }; });
     $$('#halls .opt').forEach(function(b){ b.onclick=function(){ state.hall=+b.dataset.i; track('hall_select',{hall:C.HALLS[state.hall].id}); renderSchedule(); }; });
     $$('#slots .slot').forEach(function(b){ b.onclick=function(){ state.slot=+b.dataset.i; track('slot_select',{slot:SLOTS[state.slot].l}); renderSchedule(); }; });
+  }
+  function pickDate(i){
+    var last = DATES.length - 1, max = C.MAX_DAYS - 1, min = C.MIN_DAYS - 1;
+    if (!state.picking || i <= state.start){
+      state.start = Math.min(i, last - min); state.end = state.start + min; state.picking = true;
+    } else {
+      if (i - state.start > max){ state.end = state.start + max; toast('최대 ' + C.MAX_DAYS + '일까지 대관할 수 있어요'); }
+      else state.end = Math.max(i, state.start + min);
+      state.picking = false;
+    }
+    track('date_select', {date_role:'rental', rental_start:iso(state.start), rental_end:iso(state.end), rental_days:days()});
+    renderSchedule();
   }
   $('#inp_target').addEventListener('input', function(){ state.target = this.value; });
   $('#inp_target').addEventListener('change', function(){ track('target_input',{filled: state.target.trim().length>0}); });
   $('#btn_schedule_next').addEventListener('click', function(){
-    track('schedule_next_click',{event_type:TYPES[state.type].k, hall:C.HALLS[state.hall].id, rental_date:'2026-10-'+DATES[state.date].d, slot:SLOTS[state.slot].l, target_filled:state.target.trim().length>0});
+    track('schedule_next_click',{event_type:TYPES[state.type].k, hall:C.HALLS[state.hall].id, rental_start:iso(state.start), rental_end:iso(state.end), rental_days:days(), screening_date:iso(state.show), slot:SLOTS[state.slot].l, target_filled:state.target.trim().length>0});
     go('package');
   });
 
@@ -456,8 +496,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     $('#swatches').innerHTML = COLORS.map(function(c,i){ var icon = c.custom ? (state.customSet ? '<i style="background:'+c.fan+'"></i>' : '<i class="rainbow"></i>') : '<i style="background:'+c.fan+'"></i>'; return '<button class="sw" id="btn_color_'+c.k+'" aria-pressed="'+(i===state.color)+'" data-i="'+i+'">'+icon+c.l+'</button>'; }).join('');
     $('#addons').innerHTML = C.ADDONS.map(function(a,i){ return '<button class="check" role="checkbox" id="chk_addon_'+a.id+'" aria-checked="'+state.addons[i]+'" data-i="'+i+'"><span class="box">'+CHECK+'</span><span class="bd"><b>'+a.name+'</b><span>'+a.desc+'</span></span><span class="pr">+'+won(a.price)+'</span></button>'; }).join('');
     $('#mini_word').innerHTML = TYPES[state.type].w;
+    $('#mini_word').style.fontSize = TYPES[state.type].k === 'anniversary' ? '10px' : '';
     $('#mini_name').textContent = targetName();
-    $('#mini_date').textContent = '2026.10.' + DATES[state.date].d;
+    $('#mini_date').textContent = '2026.10.' + DATES[state.show].d;
     var n = state.addons.filter(Boolean).length;
     $('#s2_sum').textContent = C.TIERS[state.tier].name + ' 패키지' + (n ? ' · 옵션 ' + n + '개' : '');
     $('#s2_price').textContent = won(total());
@@ -495,10 +536,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var h=C.HALLS[state.hall], t=C.TIERS[state.tier];
     $('#pay_info').innerHTML =
       '<div><span>기념일</span>'+esc(TYPES[state.type].l)+' · '+esc(targetName())+'</div>'+
-      '<div><span>일시</span>2026.'+dateLabel()+' '+SLOTS[state.slot].l+' '+SLOTS[state.slot].t+'</div>'+
+      '<div><span>대관 기간</span>2026.'+rangeLabel()+' · '+days()+'일</div>'+
+      '<div><span>상영</span>'+dateLabel()+' '+SLOTS[state.slot].l+' '+SLOTS[state.slot].t+'</div>'+
       '<div><span>장소</span>코엑스 · '+h.name+' ('+h.seats+'석)</div>'+
       '<div><span>팬덤 컬러</span><span style="display:inline-flex;align-items:center;gap:6px;color:var(--ink)"><i style="width:14px;height:14px;border-radius:50%;background:'+COLORS[state.color].fan+';display:inline-block"></i>'+esc(colorLabel())+'</span></div>';
-    var rows = '<div><span>대관료</span>'+won(h.price)+'</div><div><span>'+t.name+' 패키지</span>'+(t.price?won(t.price):'포함')+'</div>';
+    var rows = '<div><span>로비 기념존 ('+won(C.SPACE.price_per_day)+' × '+days()+'일)</span>'+won(spaceTotal())+'</div><div><span>상영관 대관 · '+h.name+' (1회)</span>'+won(h.price)+'</div><div><span>'+t.name+' 패키지</span>'+(t.price?won(t.price):'포함')+'</div>';
     C.ADDONS.forEach(function(a,i){ if(state.addons[i]) rows += '<div><span>'+a.name+'</span>'+won(a.price)+'</div>'; });
     $('#pay_price').innerHTML = rows + '<div class="tot"><span>합계</span>'+won(total())+'</div>';
     $('#paymethods').innerHTML = PAYS.map(function(p,i){ return '<button class="radio" role="radio" id="radio_pay_'+i+'" aria-checked="'+(i===state.pay)+'" data-i="'+i+'"><span class="dot"></span>'+p+'</button>'; }).join('');
@@ -510,7 +552,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   $('#chk_agree').addEventListener('click', function(){ state.agree=!state.agree; renderPay(); });
   $('#btn_pay_submit').addEventListener('click', function(){
     state.orderId = 'MBFAN-' + Date.now().toString(36).toUpperCase().slice(-6);
-    trackEcom('purchase', {transaction_id:state.orderId, payment_type:PAYS[state.pay], event_type:TYPES[state.type].k, fandom_color:COLORS[state.color].k, fandom_color_hex:COLORS[state.color].fan, utm_source:utm.utm_source||'(direct)', utm_campaign:utm.utm_campaign||'(none)'});
+    trackEcom('purchase', {transaction_id:state.orderId, payment_type:PAYS[state.pay], event_type:TYPES[state.type].k, rental_days:days(), screening_date:iso(state.show), fandom_color:COLORS[state.color].k, fandom_color_hex:COLORS[state.color].fan, utm_source:utm.utm_source||'(direct)', utm_campaign:utm.utm_campaign||'(none)'});
     go('done', true); render();
   });
 
@@ -518,8 +560,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   function renderDone(){
     $('#done_no').textContent = '신청번호 ' + state.orderId + ' (가상)';
     $('#done_word').innerHTML = TYPES[state.type].w;
+    var dw = $('#done_word'); dw.style.fontSize = TYPES[state.type].k === 'anniversary' ? '34px' : '';
+    requestAnimationFrame(function(){ var fs = parseFloat(getComputedStyle(dw).fontSize); while (dw.scrollWidth > dw.clientWidth + 1 && fs > 22){ fs -= 1; dw.style.fontSize = fs + 'px'; } });
     $('#done_name').textContent = targetName();
-    $('#done_date').textContent = '2026.10.' + DATES[state.date].d + ' ' + SLOTS[state.slot].t;
+    $('#done_date').textContent = '2026.10.' + DATES[state.show].d + ' ' + SLOTS[state.slot].t;
     $('#done_place').textContent = '메가박스 코엑스 · ' + C.HALLS[state.hall].name;
     $('#done_step3').textContent = state.tier === 2 ? '행사 전 커스텀 오리지널 티켓·포토카드 제작과 포토존 설치를 진행해요' : (state.tier === 1 ? '행사 당일 로비 포토존과 사진 전시월을 설치해요' : '행사 당일 상영관에서 팬 영상을 상영해요');
   }
