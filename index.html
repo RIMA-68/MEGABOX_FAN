@@ -80,7 +80,7 @@
           {
             id: "ADD_POPCORN",
             name: "커스텀 팝콘통 F&B 콤보",
-            desc: "팬덤 컬러 팝콘통에 담은 팝콘·음료 세트",
+            desc: "팬덤 커스텀 팝콘통에 담은 팝콘, 음료 세트",
             price: 120000,
           },
           {
@@ -90,10 +90,10 @@
             price: 50000,
           },
           {
-            id: "ADD_REHEARSAL",
-            name: "상영 리허설",
-            desc: "본 행사 전 영상·음향 사전 점검",
-            price: 80000,
+            id: "ADD_PHOTOBOOTH",
+            name: "간편 포토 부스 설치",
+            desc: "행사 당일 상영관 로비에 포토 부스 설치",
+            price: 500000,
           },
         ],
       };
@@ -2419,7 +2419,7 @@
             btn = $("#btn_content_next");
           btn.disabled = !ok;
           btn.textContent = ok
-            ? "다음 · 결제하기"
+            ? "다음으로"
             : "권리 확인 " + done + "/4 완료";
           $$("#uploads button").forEach(function (b) {
             b.onclick = function () {
