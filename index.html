@@ -1,125 +1,47 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <meta name="robots" content="noindex, nofollow" />
-    <title>팬 대관 가상 신청 · 메가박스 NPD 프로젝트</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Barlow+Condensed:wght@600;700&display=swap"
-    />
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-ETFVMFYEEB"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>팬 대관 가상 신청 · 메가박스 NPD 프로젝트</title>
 
-      gtag("config", "G-ETFVMFYEEB");
-    </script>
-    <!-- Google Tag Manager -->
-    <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-NGGMZZJR");
-    </script>
-    <!-- End Google Tag Manager -->
-    <script>
-      /* =========================================================
+<!-- Google Tag Manager (한 번만 로드) -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NGGMZZJR');</script>
+<!-- End Google Tag Manager -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Barlow+Condensed:wght@600;700&display=swap">
+
+<script>
+/* =========================================================
    설정 — 배포 전에 여기만 바꾸면 됩니다
    ========================================================= */
-      window.CONFIG = {
-        GTM_ID: "GTM-NGGMZZJR", // 본인 GTM 컨테이너 ID로 교체
-        CURRENCY: "KRW",
-        // 모두 테스트용 가상 금액 (실제 메가박스 대관료 아님)
-        // 기념일관 1일 이용료 — 생일카페 대관 예약금 시세(하루 10~50만 원, 헤럴드경제 2026.08)의 상단값.
-        // 상영관 전체(스크린·좌석·음향)를 기간 내내 팬덤 전용으로 쓰는 프리미엄 공간이라 상단으로 책정
-        SPACE: {
-          id: "SPECIAL_DAY_HALL",
-          name: "기념일관",
-          place: "메가박스 코엑스",
-          seats: 120,
-          hours: "10:00~22:00",
-          price_per_day: 500000,
-        },
-        MIN_DAYS: 2,
-        MAX_DAYS: 7,
-        TIERS: [
-          {
-            id: "PKG_BASIC",
-            name: "Basic",
-            desc: "기념일관 전용 이용 + 팬 영상 상시 상영 + 굿즈 나눔존",
-            price: 0,
-          },
-          {
-            id: "PKG_PLUS",
-            name: "Plus",
-            desc: "Basic + 포토부스 제작 + 사진 전시월 설치",
-            price: 150000,
-          },
-          {
-            id: "PKG_PREMIUM",
-            name: "Premium",
-            desc: "Plus + 커스텀 오리지널 티켓 + 특전 포토카드",
-            price: 300000,
-          },
-        ],
-        ADDONS: [
-          {
-            id: "ADD_POPCORN",
-            name: "커스텀 팝콘통 F&B 콤보",
-            desc: "팬덤 컬러 팝콘통에 담은 팝콘·음료 세트",
-            price: 120000,
-          },
-          {
-            id: "ADD_PHOTOCARD",
-            name: "포토카드 추가 인쇄",
-            desc: "참여 인원에 맞춰 추가 제작",
-            price: 50000,
-          },
-          {
-            id: "ADD_REHEARSAL",
-            name: "상영 리허설",
-            desc: "본 행사 전 영상·음향 사전 점검",
-            price: 80000,
-          },
-        ],
-      };
-
-      window.dataLayer = window.dataLayer || [];
-      (function () {
-        var id = window.CONFIG.GTM_ID;
-        if (!/^GTM-[A-Z0-9]+$/.test(id) || id === "GTM-T68Z6TMF") return;
-        (function (w, d, s, l, i) {
-          w[l] = w[l] || [];
-          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-          var f = d.getElementsByTagName(s)[0],
-            j = d.createElement(s),
-            dl = l != "dataLayer" ? "&l=" + l : "";
-          j.async = true;
-          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-          f.parentNode.insertBefore(j, f);
-        })(window, document, "script", "dataLayer", id);
-      })();
-    </script>
-    <style>
+window.CONFIG = {
+  CURRENCY: 'KRW',
+  // 모두 테스트용 가상 금액 (실제 메가박스 대관료 아님)
+  // 기념일관 1일 이용료 — 생일카페 대관 예약금 시세(하루 10~50만 원, 헤럴드경제 2026.08)의 상단값.
+  // 상영관 전체(스크린·좌석·음향)를 기간 내내 팬덤 전용으로 쓰는 프리미엄 공간이라 상단으로 책정
+  SPACE: {id:'SPECIAL_DAY_HALL', name:'기념일관', place:'메가박스 코엑스', seats:120, hours:'10:00~22:00', price_per_day:500000},
+  MIN_DAYS: 2, MAX_DAYS: 7,
+  TIERS: [
+    {id:'PKG_BASIC',   name:'Basic',   desc:'기념일관 전용 이용 + 팬 영상 상시 상영 + 굿즈 나눔존', price:0},
+    {id:'PKG_PLUS',    name:'Plus',    desc:'Basic + 포토부스 제작 + 사진 전시월 설치', price:150000},
+    {id:'PKG_PREMIUM', name:'Premium', desc:'Plus + 커스텀 오리지널 티켓 + 특전 포토카드', price:300000}
+  ],
+  ADDONS: [
+    {id:'ADD_POPCORN', name:'커스텀 팝콘통 F&B 콤보', desc:'팬덤 컬러 팝콘통에 담은 팝콘·음료 세트', price:120000},
+    {id:'ADD_PHOTOCARD', name:'포토카드 추가 인쇄', desc:'참여 인원에 맞춰 추가 제작', price:50000},
+    {id:'ADD_REHEARSAL', name:'상영 리허설', desc:'본 행사 전 영상·음향 사전 점검', price:80000}
+  ]
+};
+window.dataLayer = window.dataLayer || [];
+</script>
+<style>
       :root {
         --purple: #503396;
         --purple-tint: #f4f0fb;
